@@ -97,6 +97,8 @@ Build `bin/Quiet970.prg`, connect the watch over USB, and copy the PRG into the
 watch's `GARMIN/APPS` directory. Eject cleanly, then select **Quiet 970** under
 the watch-face menu.
 
+> License: Source available for educational purposes only. All rights reserved. See `LICENSE` for details.
+
 ## Store handoff
 
 Before publishing, test normal and always-on modes on physical hardware and
@@ -123,5 +125,3 @@ shutdown. Low-power rendering measured roughly 2% luminance, below Garmin's
 10% limit, and the low-power screenshot confirms that the detail row is hidden.
 Physical-watch battery testing and final visual tuning still remain before a
 release build.
-
-> License: Source available for educational purposes only. All rights reserved. See `LICENSE` for details.
