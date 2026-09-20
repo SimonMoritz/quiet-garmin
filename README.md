@@ -123,3 +123,5 @@ shutdown. Low-power rendering measured roughly 2% luminance, below Garmin's
 10% limit, and the low-power screenshot confirms that the detail row is hidden.
 Physical-watch battery testing and final visual tuning still remain before a
 release build.
+
+> License: Source available for educational purposes only. All rights reserved. See `LICENSE` for details.
