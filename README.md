@@ -67,6 +67,11 @@ connect-iq-sdk-manager login
 connect-iq-sdk-manager device download --device fr970 --include-fonts
 ```
 
+If Garmin returns HTTP 429 / Cloudflare error 1015, wait for the indicated
+`Retry-After` interval before retrying. Repeated refreshes may extend the block.
+Device downloads require a successful login; installing the SDK alone does
+not install the `fr970` compiler target.
+
 Local tools are installed under `~/.Garmin/ConnectIQ/`; launchers in
 `~/.local/bin/` provide `monkeyc`, `monkeydo`, `connectiq`, and
 `garmin-sdk-manager`. The compiler launchers follow the active SDK setting;
