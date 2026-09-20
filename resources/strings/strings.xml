@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
     <string id="AppName">Quiet 970</string>
+    <string id="left_metric_title">Left metric</string>
+    <string id="center_metric_title">Center metric</string>
+    <string id="right_metric_title">Right metric</string>
+    <string id="metric_heart_rate">Heart rate</string>
+    <string id="metric_battery">Battery</string>
+    <string id="metric_steps">Steps</string>
+    <string id="metric_stress">Stress</string>
 </strings>

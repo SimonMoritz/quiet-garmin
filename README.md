@@ -112,6 +112,19 @@ The visual values are deliberately centralized near the top of `onUpdate`.
 After seeing it on the actual display, adjust the three colors and the vertical
 ratios (`0.32`, `0.53`, `0.72`) before adding settings or more devices.
 
+## Configurable metrics
+
+The three lower slots are configurable in Garmin Connect or Garmin Express:
+choose Heart rate, Battery, Steps, or Stress for the left, center, and right
+slots. The default is heart rate, battery, and stress. Stress is rendered as a
+number, with Garmin-style bands: blue for resting (0–25), green for low
+(26–50), yellow for medium (51–75), and red for high (76–100). A missing
+stress reading displays `--`.
+
+After installing a build, open the watch face in the Garmin Connect app,
+open its settings, choose the metrics, save, and sync the watch. The face
+refreshes its slot choices through `onSettingsChanged()`.
+
 ## Verified development baseline
 
 On 2026-09-20, SDK 9.2.0 built the `fr970` target without compiler warnings.

@@ -10,4 +10,8 @@ class Braun970App extends Application.AppBase {
     function getInitialView() as [Views] or [Views, InputDelegates] {
         return [ new Braun970View() ];
     }
+
+    function onSettingsChanged() as Void {
+        WatchUi.requestUpdate();
+    }
 }
