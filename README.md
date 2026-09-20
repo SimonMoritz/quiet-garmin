@@ -109,3 +109,14 @@ screenshots, description, pricing, and support details.
 The visual values are deliberately centralized near the top of `onUpdate`.
 After seeing it on the actual display, adjust the three colors and the vertical
 ratios (`0.32`, `0.53`, `0.72`) before adding settings or more devices.
+
+## Verified development baseline
+
+On 2026-09-20, SDK 9.2.0 built the `fr970` target without compiler warnings.
+The face runs in the Forerunner 970 simulator (device API 6.0.2), including
+its missing-heart-rate placeholder, battery percentage, and zero-step display.
+The data values and labels use separate rows to avoid overlapping with the
+actual Garmin fonts. See the [simulator screenshot](docs/simulator-fr970.png).
+
+Always-on validation, large data values, and physical-watch battery testing
+remain to be done before treating this as a release-ready watch face.

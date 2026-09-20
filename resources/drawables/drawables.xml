@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <drawables>
-    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" scaleX="65" scaleY="65" />
 </drawables>
 

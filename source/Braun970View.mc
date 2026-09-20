@@ -36,8 +36,8 @@ class Braun970View extends WatchUi.WatchFace {
 
         // Move the low-power layout a few pixels over time to reduce AMOLED wear.
         var clock = System.getClockTime();
-        var driftX = _sleeping ? ((clock.minute % 3) - 1) * 3 : 0;
-        var driftY = _sleeping ? (((clock.minute / 3) % 3) - 1) * 3 : 0;
+        var driftX = _sleeping ? ((clock.min % 3) - 1) * 3 : 0;
+        var driftY = _sleeping ? (((clock.min / 3) % 3) - 1) * 3 : 0;
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
@@ -48,7 +48,7 @@ class Braun970View extends WatchUi.WatchFace {
 
         var timeText = Lang.format("$1$:$2$", [
             clock.hour.format("%02d"),
-            clock.minute.format("%02d")
+            clock.min.format("%02d")
         ]);
 
         dc.setColor(foreground, Graphics.COLOR_TRANSPARENT);
@@ -99,7 +99,7 @@ class Braun970View extends WatchUi.WatchFace {
         var stepsText = compactNumber(monitorInfo.steps);
 
         var battery = System.getSystemStats().battery.toNumber();
-        var batteryText = battery.format("%d%%");
+        var batteryText = battery.format("%d") + "%";
 
         var leftX = (dc.getWidth() * 0.25).toNumber();
         var rightX = (dc.getWidth() * 0.75).toNumber();
@@ -109,7 +109,7 @@ class Braun970View extends WatchUi.WatchFace {
             leftX,
             y,
             Graphics.FONT_TINY,
-            Lang.format("$1$ BPM", [heartText]),
+            heartText,
             Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
         );
 
@@ -125,9 +125,15 @@ class Braun970View extends WatchUi.WatchFace {
             rightX,
             y,
             Graphics.FONT_TINY,
-            Lang.format("$1$ STEPS", [stepsText]),
+            stepsText,
             Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
         );
+
+        var labelY = y + 34;
+        var labelStyle = Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER;
+        dc.drawText(leftX, labelY, Graphics.FONT_XTINY, "BPM", labelStyle);
+        dc.drawText(centerX, labelY, Graphics.FONT_XTINY, "BATT", labelStyle);
+        dc.drawText(rightX, labelY, Graphics.FONT_XTINY, "STEPS", labelStyle);
     }
 
     private function compactNumber(value as Number or Null) as String {
