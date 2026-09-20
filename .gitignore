@@ -2,4 +2,6 @@ bin/
 *.prg
 *.iq
 developer_key*
-
+.vscode/settings.json
+*.debug.xml
+*.prg.map

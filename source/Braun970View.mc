@@ -1,11 +1,11 @@
-using Toybox.Activity;
-using Toybox.ActivityMonitor;
-using Toybox.Graphics;
-using Toybox.Lang;
-using Toybox.System;
-using Toybox.Time;
-using Toybox.Time.Gregorian;
-using Toybox.WatchUi;
+import Toybox.Activity;
+import Toybox.ActivityMonitor;
+import Toybox.Graphics;
+import Toybox.Lang;
+import Toybox.System;
+import Toybox.Time;
+import Toybox.Time.Gregorian;
+import Toybox.WatchUi;
 
 class Braun970View extends WatchUi.WatchFace {
     private var _sleeping as Boolean = false;
@@ -130,9 +130,9 @@ class Braun970View extends WatchUi.WatchFace {
         );
     }
 
-    private function compactNumber(value as Number) as String {
-        if (value >= 10000) {
-            return (value / 1000).format("%dK");
+    private function compactNumber(value as Number or Null) as String {
+        if (value == null) {
+            return "--";
         }
         if (value >= 1000) {
             return Lang.format("$1$.$2$K", [value / 1000, (value % 1000) / 100]);
@@ -153,4 +153,3 @@ class Braun970View extends WatchUi.WatchFace {
         WatchUi.requestUpdate();
     }
 }
-

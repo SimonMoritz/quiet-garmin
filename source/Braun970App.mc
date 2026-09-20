@@ -1,6 +1,6 @@
-using Toybox.Application;
-using Toybox.Lang;
-using Toybox.WatchUi;
+import Toybox.Application;
+import Toybox.Lang;
+import Toybox.WatchUi;
 
 class Braun970App extends Application.AppBase {
     function initialize() {
@@ -11,4 +11,3 @@ class Braun970App extends Application.AppBase {
         return [ new Braun970View() ];
     }
 }
-
