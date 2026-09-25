@@ -2,12 +2,21 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Quiet 970",
+            "label": "Build Garmin project",
             "type": "shell",
             "command": "./scripts/build.sh",
+            "args": ["${input:project}"],
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": true },
             "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "project",
+            "type": "promptString",
+            "description": "Project directory under projects/",
+            "default": "quiet970"
         }
     ]
 }

@@ -1,0 +1,5 @@
+project.manifest = manifest.xml
+
+# Each project opts in to shared code when it needs it.
+base.sourcePath = source;../../shared/watch_numbers/source
+base.resourcePath = resources

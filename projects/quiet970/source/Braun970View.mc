@@ -141,7 +141,7 @@ class Braun970View extends WatchUi.WatchFace {
         } else if (metric == METRIC_BATTERY) {
             value = battery.format("%d") + "%";
         } else if (metric == METRIC_STEPS) {
-            value = compactNumber(monitorInfo.steps);
+            value = WatchNumbers.compact(monitorInfo.steps);
         } else if (metric == METRIC_STRESS) {
             var stress = monitorInfo.stressScore;
             if (stress != null) {
@@ -184,16 +184,6 @@ class Braun970View extends WatchUi.WatchFace {
             return 0xF2C94C;
         }
         return 0xEB5757;
-    }
-
-    private function compactNumber(value as Number or Null) as String {
-        if (value == null) {
-            return "--";
-        }
-        if (value >= 1000) {
-            return Lang.format("$1$.$2$K", [value / 1000, (value % 1000) / 100]);
-        }
-        return value.format("%d");
     }
 
     function onHide() as Void {

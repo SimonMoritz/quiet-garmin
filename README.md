@@ -1,140 +1,22 @@
-# Quiet 970
+# Garmin Connect IQ projects
 
-A restrained, AMOLED-first watch face for the Garmin Forerunner 970. It uses a
-large 24-hour clock, compact date, and a quiet row for heart rate, battery, and
-steps. The always-on state removes live details, dims the face, and shifts it
-slightly to reduce burn-in risk.
+This repository holds independent Garmin watch faces, widgets, and watch apps. Each installable project has its own manifest, application ID, code, resources, and device list. Reusable Monkey C code lives in optional modules under `shared/`.
 
-## Design
+The first project is [Quiet 970](projects/quiet970/README.md), a watch face for the Forerunner 970.
 
-- Black background and system fonts for low overhead and crisp rendering.
-- White primary type, neutral-gray secondary type, and one warm amber accent.
-- Resolution-independent placement, currently scoped to the Forerunner 970.
-- No network access, storage, or personal-data permissions.
+## Quick start
 
-## Build on Ubuntu
-
-The project uses Garmin's Monkey C compiler, Java, and OpenSSL. It does not
-need Python or Node dependencies.
-
-1. Install the [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/)
-   and select an active SDK. The current local setup uses SDK **9.2.0** and
-   OpenJDK **21**.
-2. In SDK Manager, sign in to Garmin and download **Forerunner 970** from the
-   **Devices** tab. Its compiler target is `fr970`.
-3. Install Garmin's **Monkey C** extension in VS Code (recommended by this
-   workspace).
-4. Generate a signing key once, if `developer_key.der` does not already exist:
-
-   ```bash
-   (umask 077; openssl genrsa 4096 | openssl pkcs8 -topk8 -inform PEM \
-     -outform DER -out developer_key.der -nocrypt)
-   ```
-
-   Keep this key backed up privately; reuse it for later versions. Keys are
-   ignored by Git. A key has already been generated in the current workspace.
-5. Build from the project directory:
-
-   ```bash
-   ./scripts/build.sh
-   ```
-
-   This reads `~/.Garmin/ConnectIQ/current-sdk.cfg` and writes
-   `bin/Quiet970.prg`. Override `CIQ_SDK_HOME` or `DEVELOPER_KEY` when needed.
-   Additional compiler arguments are forwarded, e.g. `./scripts/build.sh -r`
-   for a release build. VS Code's default build task runs the same script.
-
-For the extension's own build/debug commands, set **Monkey C: Developer Key
-Path** to the absolute path of your key. The current workspace has this in
-an ignored `.vscode/settings.json`.
-
-### Ubuntu 24.04 GUI compatibility
-
-Garmin's native SDK Manager and simulator require WebKitGTK 4.0, which is not
-shipped in Ubuntu 24.04. The current machine uses the community-maintained
-[AppImage packages](https://github.com/pcolby/connectiq-sdk-manager) for those
-two GUI applications, alongside the official SDK/compiler. Their required
-`libwebkit2gtk-4.1-0` and `libfuse2t64` system packages are already installed.
-No system packages were added for this project.
-
-If SDK Manager's embedded sign-in window is blank, use the installed
-[community CLI manager](https://github.com/lindell/connect-iq-sdk-manager-cli)
-instead. It authenticates through Garmin in your regular browser:
+Install the [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/), download a device target in SDK Manager, and create a private `developer_key.der` as described in [development setup](docs/development.md). Then run:
 
 ```bash
-connect-iq-sdk-manager login
-# Open the localhost URL it prints and sign in to Garmin.
-connect-iq-sdk-manager device download --device fr970 --include-fonts
+./scripts/build.sh --list
+./scripts/build.sh quiet970
 ```
 
-If Garmin returns HTTP 429 / Cloudflare error 1015, wait for the indicated
-`Retry-After` interval before retrying. Repeated refreshes may extend the block.
-Device downloads require a successful login; installing the SDK alone does
-not install the `fr970` compiler target.
+For simulator testing, start `connectiq`, then run `monkeydo bin/quiet970/fr970.prg fr970` in another terminal.
 
-Local tools are installed under `~/.Garmin/ConnectIQ/`; launchers in
-`~/.local/bin/` provide `monkeyc`, `monkeydo`, `connectiq`, and
-`garmin-sdk-manager`. The compiler launchers follow the active SDK setting;
-the simulator AppImage is pinned to 9.2.0 and should be updated alongside
-future SDK upgrades.
+The build command accepts a project and optional device ID. A project's `default-device.txt` supplies the device when omitted. Compiler flags follow the device, for example `./scripts/build.sh quiet970 fr970 -r`. Builds go to `bin/<project>/<device>.prg`.
 
-### Run in the simulator
+See [architecture and adding projects](docs/architecture.md) for watch faces, widgets, and watch apps, [development setup](docs/development.md) for SDK and simulator use, and [AGENTS.md](AGENTS.md) for a quick repository map for coding agents.
 
-Start `connectiq` in one terminal. After its window opens, run in another:
-
-```bash
-./scripts/build.sh
-monkeydo bin/Quiet970.prg fr970
-```
-
-Check normal and always-on display modes, missing heart-rate/step data, and
-long values before installing on the watch. `preview.png` is a design reference,
-not a verified screenshot of the compiled face.
-
-## Install on your watch
-
-Build `bin/Quiet970.prg`, connect the watch over USB, and copy the PRG into the
-watch's `GARMIN/APPS` directory. Eject cleanly, then select **Quiet 970** under
-the watch-face menu.
-
-> License: Source available for educational purposes only. All rights reserved. See `LICENSE` for details.
-
-## Store handoff
-
-Before publishing, test normal and always-on modes on physical hardware and
-check memory/battery use in the simulator. Export a signed IQ package from the
-Monkey C extension, then upload it in the Connect IQ developer portal with
-screenshots, description, pricing, and support details.
-
-## Next design pass
-
-The visual values are deliberately centralized near the top of `onUpdate`.
-After seeing it on the actual display, adjust the three colors and the vertical
-ratios (`0.32`, `0.53`, `0.72`) before adding settings or more devices.
-
-## Configurable metrics
-
-The three lower slots are configurable in Garmin Connect or Garmin Express:
-choose Heart rate, Battery, Steps, or Stress for the left, center, and right
-slots. The default is heart rate, battery, and stress. Stress is rendered as a
-number, with Garmin-style bands: blue for resting (0–25), green for low
-(26–50), yellow for medium (51–75), and red for high (76–100). A missing
-stress reading displays `--`.
-
-After installing a build, open the watch face in the Garmin Connect app,
-open its settings, choose the metrics, save, and sync the watch. The face
-refreshes its slot choices through `onSettingsChanged()`.
-
-## Verified development baseline
-
-On 2026-09-20, SDK 9.2.0 built the `fr970` target without compiler warnings.
-The face runs in the Forerunner 970 simulator (device API 6.0.2), including
-its missing-heart-rate placeholder, battery percentage, and zero-step display.
-The data values and labels use separate rows to avoid overlapping with the
-actual Garmin fonts. See the [simulator screenshot](docs/simulator-fr970.png).
-
-The simulator's accelerated 24-hour Always-On test completed without a burn-in
-shutdown. Low-power rendering measured roughly 2% luminance, below Garmin's
-10% limit, and the low-power screenshot confirms that the detail row is hidden.
-Physical-watch battery testing and final visual tuning still remain before a
-release build.
+Source is available for educational purposes only. See [LICENSE](LICENSE).
