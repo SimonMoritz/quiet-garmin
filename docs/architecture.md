@@ -14,7 +14,8 @@ projects/
 shared/
   watch_numbers/source/    optional reusable number formatting module
 scripts/build.sh           selects project and device
-bin/<project>/<device>.prg  ignored build output
+.build/<project>/<device>/  ignored compiler cache and MIR files
+bin/<project>/<device>.prg  ignored runnable build output
 ```
 
 Project boundaries matter: use a distinct manifest ID for every installable product, and keep its settings, assets, permissions, and supported devices in that project's directory. Do not copy Quiet 970's manifest ID into a new project. Existing Quiet 970 builds retain their original ID, so an update remains associated with the same watch face.
@@ -38,7 +39,7 @@ Watch faces normally return a `WatchUi.WatchFace` from the entry app. Widgets an
 
 ## Build contract
 
-`scripts/build.sh` validates the project name and required files, selects the requested or default device, resolves the active SDK and private signing key, then invokes `monkeyc` from the selected project directory. This keeps relative Jungle paths local to the project. `CIQ_SDK_HOME`, `CIQ_HOME`, `CIQ_DEVICES_HOME`, and `DEVELOPER_KEY` can override local defaults. Arguments after the device go directly to `monkeyc`. The no-argument command still builds Quiet 970 for compatibility with the original workflow.
+`scripts/build.sh` validates the project name and required files, selects the requested or default device, resolves the active SDK and private signing key, then invokes `monkeyc` from the selected project directory. This keeps relative Jungle paths local to the project. The compiler writes generated resources and MIR files (its intermediate representation of the real `.mc` source) into `.build/`; the script copies the PRG and simulator metadata into `bin/`. MIR paths mirror the original source paths but are not editable source. `CIQ_SDK_HOME`, `CIQ_HOME`, `CIQ_DEVICES_HOME`, and `DEVELOPER_KEY` can override local defaults. Arguments after the device go directly to `monkeyc`. The no-argument command still builds Quiet 970 for compatibility with the original workflow.
 
 The script creates a single-device PRG for simulator testing or USB sideloading. For store publication, export and test an IQ package containing every supported device using Garmin's tooling.
 

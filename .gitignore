@@ -1,4 +1,5 @@
 bin/
+.build/
 *.prg
 *.iq
 developer_key*

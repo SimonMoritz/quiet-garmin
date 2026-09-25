@@ -74,9 +74,21 @@ if [[ ! -f "$developer_key" ]]; then
     exit 1
 fi
 
+build_dir="$repo_dir/.build/$project/$device"
 output_dir="$repo_dir/bin/$project"
-mkdir -p "$output_dir"
+mkdir -p "$build_dir" "$output_dir"
 cd "$project_dir"
-exec "$CIQ_SDK_HOME/bin/monkeyc" \
-    -f monkey.jungle -d "$device" -o "$output_dir/$device.prg" \
+"$CIQ_SDK_HOME/bin/monkeyc" \
+    -f monkey.jungle -d "$device" -o "$build_dir/$device.prg" \
     -y "$developer_key" -w "$@"
+
+# The compiler creates MIR and generated resource trees beside its output.
+# Keep those caches out of bin/, which holds files used by the simulator.
+for artifact in \
+    "$build_dir/$device.prg" \
+    "$build_dir/$device.prg.debug.xml" \
+    "$build_dir/$device-settings.json"; do
+    if [[ -f "$artifact" ]]; then
+        cp -p -- "$artifact" "$output_dir/"
+    fi
+done

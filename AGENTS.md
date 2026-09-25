@@ -7,7 +7,7 @@ This is a multi-project Garmin Connect IQ repository. Start with [README.md](REA
 - `projects/<name>/manifest.xml` defines that installable product's app ID, type, entry point, permissions, and supported devices.
 - `projects/<name>/monkey.jungle`, `source/`, and `resources/` contain its build paths, Monkey C code, and assets. Keep product-specific code and settings here.
 - `shared/<module>/source/` contains reusable Monkey C code. A project opts into a module by adding its path to `base.sourcePath` in its Jungle file.
-- `scripts/build.sh` is the repository build entry point. `bin/` contains ignored build output.
+- `scripts/build.sh` is the repository build entry point. `.build/` contains ignored compiler intermediates; `bin/` contains the runnable PRG and simulator metadata. Edit `.mc` files under `projects/`, never generated `.mir` files.
 - `projects/quiet970/` is the existing Forerunner 970 watch face. Preserve its manifest ID when changing it; use a new ID for every new product.
 
 ## Working in this repository
